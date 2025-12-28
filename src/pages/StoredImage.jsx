@@ -1,12 +1,12 @@
 import { useEffect ,useState} from "react"
-
 const StoredImage = () => {
     const [img,setImg]=useState(null);
     useEffect(()=>{
-        const storedImage=JSON.parse(localStorage.getItem("inventory"));
-        const img=storedImage[0]?.image || null;
-        setImg(img);
-        
+        const storedImage=JSON.parse(localStorage.getItem("inventory") || []);
+        for(let i=0;i<=3;i++){
+            const img=storedImage[i]?.image || null;
+            setImg(img);
+        }     
     },[])
     return (
         <div className="stored">
@@ -18,7 +18,6 @@ const StoredImage = () => {
                 border:"1px solid #ccc",
                 borderRadius:"20px",
                 marginTop:"10px"
-
                 }} />
         </div>
     )

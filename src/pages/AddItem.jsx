@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import SavePopup from "../component/SavePopup"; 
 
 const AddItem = () => {
   const inventory = JSON.parse(localStorage.getItem("inventory")) || [];
@@ -14,8 +15,13 @@ const AddItem = () => {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
-  const [error, setError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [quantityError, setQuantityError] = useState("");
+  const [priceError, setPriceError] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+  const [descError, setDescError] = useState("");
   const [success, setSuccess] = useState("");
+  const [savePopup,setSavePopup]=useState(false);
 
   const fileHandle = (e) => {
     const file = e.target.files[0];
@@ -29,37 +35,50 @@ const AddItem = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
 
     if (!itemName.trim()) {
-      setError("Item name is required");
-      nameRef.current.focus();
-      return;
+        setNameError("Item name is required");
+        nameRef.current.focus();
+        setTimeout(()=>{
+            setNameError("")
+        },3000);
+        return;
     }
 
     if (!quantity || quantity <= 0) {
-      setError("Quantity must be greater than 0");
-      quantityRef.current.focus();
-      return;
+        setQuantityError("Quantity must be greater than 0");
+        quantityRef.current.focus();
+        setTimeout(()=>{
+            setQuantityError("")
+        },3000);
+        return;
     }
 
     if (!price || price <= 0) {
-      setError("Price must be greater than 0");
-      priceRef.current.focus();
-      return;
+        setPriceError("Price must be greater than 0");
+        priceRef.current.focus();
+        setTimeout(()=>{
+            setPriceError("")
+        },3000);
+        return;
     }
 
     if (!category) {
-      setError("Please select a category");
-      categoryRef.current.focus();
-      return;
+        setCategoryError("Please select a category");
+        categoryRef.current.focus();
+        setTimeout(()=>{
+            setCategoryError("")
+        },3000);
+        return;
     }
 
     if (!description.trim()) {
-      setError("Description is required");
-      descRef.current.focus();
-      return;
+        setDescError("Description is required");
+        descRef.current.focus();
+        setTimeout(()=>{
+            setDescError("")
+        },3000);
+        return;
     }
 
     const newItem = {
@@ -75,22 +94,26 @@ const AddItem = () => {
 
     inventory.push(newItem);
     localStorage.setItem("inventory", JSON.stringify(inventory));
+    setSavePopup(true);
 
+   
+    // setSuccess("Item added successfully ✅");
+  };
+  const closePopup=()=>{
+    setSavePopup(false);
     setItemName("");
     setQuantity("");
     setPrice("");
     setCategory("");
     setDescription("");
     setImage("");
-    setSuccess("Item added successfully ✅");
-  };
+  }
 
   return (
     <div className="add-item">
       <h2>Add New Item</h2>
 
-      {error && <p className="error">{error}</p>}
-      {success && <p className="success">{success}</p>}
+      {/* {success && <p className="success">{success}</p>} */}
 
       <form onSubmit={handleSubmit} className="add-item-form">
         <label>Item Name</label>
@@ -98,6 +121,8 @@ const AddItem = () => {
         value={itemName} 
         placeholder="write item name here..."
         onChange={e => setItemName(e.target.value)} />
+        {nameError && <p className="error">{nameError}</p>}
+
 
         <label>Quantity</label>
         <input ref={quantityRef} 
@@ -105,6 +130,9 @@ const AddItem = () => {
         value={quantity} 
         placeholder="enter quantity..."
         onChange={e => setQuantity(Number(e.target.value))} />
+        {quantityError && <p className="error">{quantityError}</p>}
+
+
 
         <label>Price</label>
         <input ref={priceRef} 
@@ -112,6 +140,8 @@ const AddItem = () => {
         value={price} 
         placeholder="enter price..."
         onChange={e => setPrice(Number(e.target.value))} />
+        {priceError && <p className="error">{priceError}</p>}
+
 
         <label>Category</label>
         <select ref={categoryRef} value={category} onChange={e => setCategory(e.target.value)}>
@@ -123,6 +153,7 @@ const AddItem = () => {
           <option>Sports</option>
           <option>Others</option>
         </select>
+        {categoryError && <p className="error">{categoryError}</p>}
 
         <label>Description</label>
         <textarea 
@@ -131,14 +162,14 @@ const AddItem = () => {
         placeholder="write description here..."
         value={description}
         onChange={e => setDescription(e.target.value)} />
+        {descError&&<p className="error">{descError}</p>}
 
         <label>Image (optional)</label>
         <input type="file" accept="image/*" onChange={fileHandle} />
-
         <button type="submit">Add Item</button>
       </form>
+      {savePopup&&<SavePopup onClose={closePopup}/>}
     </div>
   );
 };
-
 export default AddItem;
