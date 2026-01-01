@@ -6,7 +6,6 @@ const InventoryList = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [sortBy, setSortBy] = useState("date");
-
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("inventory")) || [];
     setItems(data);
