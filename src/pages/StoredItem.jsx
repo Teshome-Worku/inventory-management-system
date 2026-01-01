@@ -1,10 +1,11 @@
 import { useEffect ,useState} from "react"
-const StoredImage = () => {
+import '../component/storedItem.css'
+const StoredItem = () => {
     const [img,setImg]=useState(null);
     useEffect(()=>{
-        const storedImage=JSON.parse(localStorage.getItem("inventory") || []);
+        const StoredItem=JSON.parse(localStorage.getItem("inventory") || []);
         for(let i=0;i<=3;i++){
-            const img=storedImage[i]?.image || null;
+            const img=StoredItem[i]?.image || null;
             setImg(img);
         }     
     },[])
@@ -22,4 +23,4 @@ const StoredImage = () => {
         </div>
     )
 }
-export default StoredImage
+export default StoredItem;

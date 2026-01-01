@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
+import {useNavigate} from 'react-router-dom';
 import SavePopup from "../component/SavePopup"; 
 
 const AddItem = () => {
   const inventory = JSON.parse(localStorage.getItem("inventory")) || [];
-
+  const navigate=useNavigate();
   const nameRef = useRef(null);
   const quantityRef = useRef(null);
   const priceRef = useRef(null);
@@ -20,9 +21,8 @@ const AddItem = () => {
   const [priceError, setPriceError] = useState("");
   const [categoryError, setCategoryError] = useState("");
   const [descError, setDescError] = useState("");
-  const [success, setSuccess] = useState("");
   const [savePopup,setSavePopup]=useState(false);
-
+  
   const fileHandle = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -95,9 +95,6 @@ const AddItem = () => {
     inventory.push(newItem);
     localStorage.setItem("inventory", JSON.stringify(inventory));
     setSavePopup(true);
-
-   
-    // setSuccess("Item added successfully ✅");
   };
   const closePopup=()=>{
     setSavePopup(false);
@@ -107,14 +104,12 @@ const AddItem = () => {
     setCategory("");
     setDescription("");
     setImage("");
+    navigate('/');
   }
 
   return (
     <div className="add-item">
       <h2>Add New Item</h2>
-
-      {/* {success && <p className="success">{success}</p>} */}
-
       <form onSubmit={handleSubmit} className="add-item-form">
         <label>Item Name</label>
         <input ref={nameRef} 
@@ -122,7 +117,6 @@ const AddItem = () => {
         placeholder="write item name here..."
         onChange={e => setItemName(e.target.value)} />
         {nameError && <p className="error">{nameError}</p>}
-
 
         <label>Quantity</label>
         <input ref={quantityRef} 
@@ -166,7 +160,7 @@ const AddItem = () => {
 
         <label>Image (optional)</label>
         <input type="file" accept="image/*" onChange={fileHandle} />
-        <button type="submit">Add Item</button>
+        <button type="submit" >Add Item</button>
       </form>
       {savePopup&&<SavePopup onClose={closePopup}/>}
     </div>

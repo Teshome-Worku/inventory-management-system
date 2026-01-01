@@ -1,0 +1,103 @@
+.inventory-page {
+    padding: 24px;
+    background: #f5f7fb;
+    min-height: 100vh;
+    margin-left: 250px;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.controls input,
+.controls select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    outline: none;
+}
+
+.controls input {
+    flex: 1;
+}
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.item-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item-card img {
+    height: 140px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.item-info h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.item-info p {
+    margin: 0;
+    color: #6b7280;
+}
+
+.qty {
+    font-weight: 600;
+    color: #16a34a;
+}
+
+.qty.low {
+    color: #dc2626;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.actions button {
+    flex: 1;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.actions .edit {
+    background: #22c55e;
+    color: white;
+}
+
+.actions .delete {
+    background: #ef4444;
+    color: white;
+}
+
+.empty-state {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    color: #6b7280;
+}
