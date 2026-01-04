@@ -33,7 +33,7 @@ const Sidebar = () => {
             isActive ? "nav-link active" : "nav-link"
           }
         >
-          📃Inventory List
+          📦Inventory 
         </NavLink>
       </nav>
     </aside>

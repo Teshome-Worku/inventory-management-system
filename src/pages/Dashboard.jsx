@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getAllItems } from "../db/inventoryDB";
 import "../component/dashboard.css";
 
 const LOW_STOCK_LIMIT = 5;
@@ -7,36 +8,40 @@ const Dashboard = () => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const storedInventory = localStorage.getItem("inventory");
-    if (storedInventory) {
-      setItems(JSON.parse(storedInventory));
-    }
-  }, []);
+    const loadInventory = async () => {
+      const data = await getAllItems();
+      setItems(data);
+    };
 
-  /* ===== SUMMARY LOGIC ===== */
+    loadInventory();
+  }, []);
 
   // 1. Total unique items
   const totalItems = items.length;
 
-  // 2. Total quantity (sum of all quantities)
+  // 2. Total quantity
   const totalQuantity = items.reduce(
-    (sum, item) => sum + Number(item.quantity),0);
+    (sum, item) => sum + Number(item.quantity),
+    0
+  );
 
   // 3. Unique categories
-  const categoriesCount = new Set(items.map(item => item.category)).size;
+  const categoriesCount = new Set(
+    items.map((item) => item.category)
+  ).size;
 
   // 4. Low stock items
   const lowStockItems = items.filter(
-    item => Number(item.quantity) <= LOW_STOCK_LIMIT
+    (item) => Number(item.quantity) <= LOW_STOCK_LIMIT
   );
 
-  // 5. Recently added items (latest first)
+  // 5. Recently added (latest first)
   const recentItems = [...items]
-    .sort((a, b) => b.id - a.id)
+    .sort((a, b) => b.createdAt - a.createdAt)
     .slice(0, 5);
+
   return (
     <div className="dashboard">
-
       <h1 className="dashboard-title">Dashboard</h1>
 
       {/* ===== SUMMARY CARDS ===== */}
@@ -61,6 +66,7 @@ const Dashboard = () => {
           <p className="stat-number">{lowStockItems.length}</p>
         </div>
       </div>
+
       {/* ===== DASHBOARD SECTIONS ===== */}
       <div className="dashboard-sections">
         {/* LOW STOCK */}
@@ -71,9 +77,9 @@ const Dashboard = () => {
             <p className="empty">No low stock items 🎉</p>
           ) : (
             <ul className="low-stock-list">
-              {lowStockItems.slice(0, 5).map(item => (
+              {lowStockItems.slice(0, 5).map((item) => (
                 <li key={item.id}>
-                  <span>{item.itemName}</span>
+                  <span>{item.name}</span>
                   <span className="qty danger">
                     {item.quantity} left
                   </span>
@@ -82,19 +88,27 @@ const Dashboard = () => {
             </ul>
           )}
         </div>
+
         {/* RECENT ITEMS */}
         <div className="section">
           <h2>🆕 Recently Added</h2>
 
           {recentItems.length === 0 ? (
-            <p className="empty">No items added yet. Start by adding inventory.</p>
+            <p className="empty">
+              No items added yet. Start by adding inventory.
+            </p>
           ) : (
             <div className="recent-grid">
-              {recentItems.map(item => (
+              {recentItems.map((item) => (
                 <div className="recent-card" key={item.id}>
-                  <img src={item.image} alt={item.itemName} />
+                  {item.image && (
+                    <img
+                      src={URL.createObjectURL(item.image)}
+                      alt={item.name}
+                    />
+                  )}
                   <div>
-                    <h4>{item.itemName}</h4>
+                    <h4>{item.name}</h4>
                     <p>{item.category}</p>
                     <small>Qty: {item.quantity}</small>
                   </div>
@@ -103,9 +117,9 @@ const Dashboard = () => {
             </div>
           )}
         </div>
-
       </div>
     </div>
   );
 };
+
 export default Dashboard;

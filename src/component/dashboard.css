@@ -143,6 +143,7 @@
 
 .recent-card:hover {
     background: #f3f4f6;
+    cursor: pointer;
 }
 
 .recent-card img {
@@ -151,6 +152,11 @@
     border-radius: 10px;
     object-fit: cover;
     border: 1px solid #e5e7eb;
+    transition: transform 0.2s ease;
+}
+
+.recent-card img:hover {
+    transform: none;
 }
 
 .recent-card h4 {

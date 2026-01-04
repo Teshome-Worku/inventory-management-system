@@ -1,144 +1,142 @@
-import { useRef, useState } from "react";
-import {useNavigate} from 'react-router-dom';
-import SavePopup from "../component/SavePopup"; 
-
+import { useState,useRef } from "react";
+import { addItem } from "../db/inventoryDB";
+import { useNavigate } from "react-router-dom";
+import SavePopup from "../component/SavePopup";
 const AddItem = () => {
-  const inventory = JSON.parse(localStorage.getItem("inventory")) || [];
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const nameRef = useRef(null);
   const quantityRef = useRef(null);
   const priceRef = useRef(null);
   const categoryRef = useRef(null);
   const descRef = useRef(null);
-  const [itemName, setItemName] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("");
-  const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
   const [nameError, setNameError] = useState("");
   const [quantityError, setQuantityError] = useState("");
   const [priceError, setPriceError] = useState("");
   const [categoryError, setCategoryError] = useState("");
   const [descError, setDescError] = useState("");
   const [savePopup,setSavePopup]=useState(false);
-  
-  const fileHandle = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const [formData, setFormData] = useState({
+    name: "",
+    category: "",
+    quantity: "",
+    price: "",
+    description:"",
+    image: null,
+  });
 
-    const reader = new FileReader();
-    reader.onload = () => setImage(reader.result);
-    reader.onerror = () => setError("Failed to read image");
-    reader.readAsDataURL(file);
+  /* ==========================
+     HANDLE INPUT CHANGE
+  ========================== */
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: files ? files[0] : value,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  /* ==========================
+     SUBMIT FORM
+  ========================== */
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!itemName.trim()) {
-        setNameError("Item name is required");
-        nameRef.current.focus();
-        setTimeout(()=>{
-            setNameError("")
-        },3000);
-        return;
-    }
-
-    if (!quantity || quantity <= 0) {
-        setQuantityError("Quantity must be greater than 0");
-        quantityRef.current.focus();
-        setTimeout(()=>{
-            setQuantityError("")
-        },3000);
-        return;
-    }
-
-    if (!price || price <= 0) {
-        setPriceError("Price must be greater than 0");
-        priceRef.current.focus();
-        setTimeout(()=>{
-            setPriceError("")
-        },3000);
-        return;
-    }
-
-    if (!category) {
-        setCategoryError("Please select a category");
-        categoryRef.current.focus();
-        setTimeout(()=>{
-            setCategoryError("")
-        },3000);
-        return;
-    }
-
-    if (!description.trim()) {
-        setDescError("Description is required");
-        descRef.current.focus();
-        setTimeout(()=>{
-            setDescError("")
-        },3000);
-        return;
-    }
+    if (!formData.name.trim()) {
+      setNameError("Item name is required");
+      nameRef.current.focus();
+      setTimeout(()=>{
+          setNameError("")
+      },3000);
+      return;
+  }
+  
+  if (!formData.quantity || formData.quantity <= 0) {
+      setQuantityError("Quantity must be greater than 0");
+      quantityRef.current.focus();
+      setTimeout(()=>{
+          setQuantityError("")
+      },3000);
+      return;
+  }
+  
+  if (!formData.price || formData.price <= 0) {
+      setPriceError("Price must be greater than 0");
+      priceRef.current.focus();
+      setTimeout(()=>{
+          setPriceError("")
+      },3000);
+      return;
+  }
+  
+  if (!formData.category) {
+      setCategoryError("Please select a category");
+      categoryRef.current.focus();
+      setTimeout(()=>{
+          setCategoryError("")
+      },3000);
+      return;
+  }
+  
+  if (!formData.description.trim()) {
+      setDescError("Description is required");
+      descRef.current.focus();
+      setTimeout(()=>{
+          setDescError("")
+      },3000);
+      return;
+  }
 
     const newItem = {
-      id: Date.now(),
-      itemName,
-      quantity,
-      price,
-      category,
-      description,
-      image,
-      createdAt: new Date().toISOString(),
+      id: Date.now(), // unique ID
+      name: formData.name,
+      category: formData.category,
+      quantity: Number(formData.quantity),
+      description:formData.description,
+      price: Number(formData.price),
+      image: formData.image,
+      createdAt: new Date(),
     };
 
-    inventory.push(newItem);
-    localStorage.setItem("inventory", JSON.stringify(inventory));
-    setSavePopup(true);
+    try {
+      await addItem(newItem);
+      setSavePopup(true)
+    } catch (error) {
+      console.error("Failed to add item:", error);
+    }
   };
   const closePopup=()=>{
     setSavePopup(false);
-    setItemName("");
-    setQuantity("");
-    setPrice("");
-    setCategory("");
-    setDescription("");
-    setImage("");
-    navigate('/');
+    setFormData({
+      name: "",
+      category: "",
+      quantity: "",
+      price: "",
+      description: "",
+      image: null,
+    });
+    
+    navigate("/");
+
   }
 
   return (
     <div className="add-item">
-      <h2>Add New Item</h2>
+      <h1>Add Inventory Item</h1>
+
       <form onSubmit={handleSubmit} className="add-item-form">
-        <label>Item Name</label>
-        <input ref={nameRef} 
-        value={itemName} 
-        placeholder="write item name here..."
-        onChange={e => setItemName(e.target.value)} />
+        <label >Item Name</label>
+        <input
+          type="text"
+          name="name"
+          ref={nameRef}
+          placeholder="Item name"
+          value={formData.name}
+          onChange={handleChange}
+        />
         {nameError && <p className="error">{nameError}</p>}
 
-        <label>Quantity</label>
-        <input ref={quantityRef} 
-        type="number" 
-        value={quantity} 
-        placeholder="enter quantity..."
-        onChange={e => setQuantity(Number(e.target.value))} />
-        {quantityError && <p className="error">{quantityError}</p>}
-
-
-
-        <label>Price</label>
-        <input ref={priceRef} 
-        type="number" 
-        value={price} 
-        placeholder="enter price..."
-        onChange={e => setPrice(Number(e.target.value))} />
-        {priceError && <p className="error">{priceError}</p>}
-
-
-        <label>Category</label>
-        <select ref={categoryRef} value={category} onChange={e => setCategory(e.target.value)}>
+        <label >Category</label>
+        <select ref={categoryRef} value={formData.category} onChange={handleChange} name="category">
           <option value="">Select Category</option>
           <option>Electronics</option>
           <option>Clothing</option>
@@ -149,21 +147,54 @@ const AddItem = () => {
         </select>
         {categoryError && <p className="error">{categoryError}</p>}
 
-        <label>Description</label>
-        <textarea 
-        ref={descRef} 
-        rows="4" 
-        placeholder="write description here..."
-        value={description}
-        onChange={e => setDescription(e.target.value)} />
-        {descError&&<p className="error">{descError}</p>}
+        <label >Quantity</label>
+        <input
+          type="number"
+          ref={quantityRef}
+          name="quantity"
+          placeholder="Quantity"
+          value={formData.quantity}
+          onChange={handleChange}
+        />
+        {quantityError && <p className="error">{quantityError}</p>}
 
-        <label>Image (optional)</label>
-        <input type="file" accept="image/*" onChange={fileHandle} />
-        <button type="submit" >Add Item</button>
+        
+        <label>Price</label>
+        <input
+          type="number"
+          name="price"
+          ref={priceRef}
+          placeholder="Price"
+          value={formData.price}
+          onChange={handleChange}
+        />
+        {priceError && <p className="error">{priceError}</p>}
+
+        <label >Description</label>
+        <input 
+          type="text"
+          ref={descRef}
+          name="description"
+          placeholder="description"
+          value={formData.description}
+          onChange={handleChange}
+        />
+        {descError && <p className="error">{descError}</p>}
+
+
+        <label >Image</label>
+        <input
+          type="file"
+          name="image"
+          accept="image/*"
+          onChange={handleChange}
+        />
+
+        <button type="submit"> Add Item</button>
       </form>
-      {savePopup&&<SavePopup onClose={closePopup}/>}
+      {savePopup&& <SavePopup onClose={closePopup}/>}
     </div>
   );
 };
+
 export default AddItem;

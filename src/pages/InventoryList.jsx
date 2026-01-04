@@ -1,81 +1,79 @@
 import { useEffect, useState } from "react";
-import "../component/inventoryList.css";
+import { getAllItems, deleteItem } from "../db/inventoryDB";
+import "../component/InventoryList.css";
+import trash from '../assets/trash.png';
+import editButton from '../assets/edit-button.png';
 
 const InventoryList = () => {
   const [items, setItems] = useState([]);
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("all");
-  const [sortBy, setSortBy] = useState("date");
+
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("inventory")) || [];
-    setItems(data);
+    loadItems();
   }, []);
 
-  // 🧠 FILTER + SORT LOGIC
-  const filteredItems = items
-    .filter(item =>
-      item.itemName.toLowerCase().includes(search.toLowerCase())
-    )
-    .filter(item =>
-      category === "all" ? true : item.category === category
-    )
-    .sort((a, b) => {
-      if (sortBy === "qty") return a.quantity - b.quantity;
-      if (sortBy === "name") return a.name.localeCompare(b.name);
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    });
+  const loadItems = async () => {
+    const data = await getAllItems();
+    setItems(data);
+  };
+
+  const handleDelete = async (id) => {
+    await deleteItem(id);
+    loadItems(); // refresh list after delete
+  };
 
   return (
     <div className="inventory-page">
-      <h1 className="page-title">Inventory</h1>
-      {/* Controls */}
-      <div className="controls">
-        <input
-          type="text"
-          placeholder="Search item..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <select onChange={(e) => setCategory(e.target.value)}>
-          <option value="all">All Categories</option>
-          <option value="Books">Books</option>
-          <option value="Sports">Sports</option>
-          <option value="Stationery">Stationery</option>
-        </select>
+      <h2 className="inventory-page-title">Inventory List</h2>
 
-        <select onChange={(e) => setSortBy(e.target.value)}>
-          <option value="date">Newest</option>
-          <option value="name">Name</option>
-          <option value="qty">Quantity</option>
-        </select>
-      </div>
-
-      {/* List */}
-      {filteredItems.length === 0 ? (
-        <div className="empty-state">
-          📦 No items found
-        </div>
+      {items.length === 0 ? (
+        <p className="empty">No items found</p>
       ) : (
-        <div className="inventory-grid">
-          {filteredItems.map(item => (
-            <div className="item-card" key={item.id}>
-              <img src={item.image} alt={item.name} />
+        <table className="inventory-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Added On</th>
+              <th>Actions</th>
 
-              <div className="item-info">
-                <h3>{item.itemName}</h3>
-                <p>{item.category}</p>
-                <span className={`qty ${item.quantity < 5 ? "low" : ""}`}>
-                  Qty: {item.quantity}
-                </span>
-              </div>
+            </tr>
+          </thead>
 
-              <div className="actions">
-                <button className="edit">Edit</button>
-                <button className="delete">Delete</button>
-              </div>
-            </div>
-          ))}
-        </div>
+          <tbody>
+            {items.map((item) => (
+              <tr key={item.id}>
+                <td>
+                  <div className="item-cell">
+                    {item.image && (
+                      <img src={URL.createObjectURL(item.image)} alt={item.name} />
+                    )}
+                    <span>{item.name}</span>
+                  </div>
+                </td>
+
+                <td>{item.category}</td>
+                <td>${item.price}</td>
+                <td>{item.quantity}</td>
+                <td>{item.createdAt.toLocaleDateString()}</td>
+
+  
+                <td>
+                  <div className="actions">
+                    <button className="edit-btn"><img src={trash} alt="edit-btn"/></button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <img src={editButton} alt="delete-btn"/>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );
