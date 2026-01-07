@@ -8,6 +8,10 @@
     font-family: "Inter", system-ui, sans-serif;
 }
 
+.dash {
+    display: flex;
+}
+
 
 /* ===== TITLE ===== */
 
@@ -37,6 +41,16 @@
     padding: 20px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card span {
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.stat-card img {
+    width: 40px;
+    height: 40px;
 }
 
 .stat-card:hover {
@@ -192,5 +206,15 @@
 @media (max-width: 900px) {
     .dashboard-sections {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width:768px) {
+    .dashboard {
+        margin-left: 0;
+    }
+    .dash {
+        margin-top: 10px;
+        justify-content: center;
     }
 }

@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { getAllItems } from "../db/inventoryDB";
 import "../component/dashboard.css";
+import total from '../assets/total.png'
+import quantity from '../assets/quantity.png'
+import category from '../assets/category.png'
+import low from '../assets/low.png'
 
 const LOW_STOCK_LIMIT = 5;
 
@@ -42,15 +46,19 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <h1 className="dashboard-title">Dashboard</h1>
+      <div className="dash">
+        <h1 className="dashboard-title">Dashboard</h1>
+
+      </div>
 
       {/* ===== SUMMARY CARDS ===== */}
       <div className="stats-grid">
         <div className="stat-card">
           <h3>Total Items</h3>
-          <p className="stat-number">{totalItems}</p>
+            <p className="stat-number">{totalItems}</p>
+            <span><img src={total} alt="total item"/></span>
+         
         </div>
-
         <div className="stat-card">
           <h3>Total Quantity</h3>
           <p className="stat-number">{totalQuantity}</p>

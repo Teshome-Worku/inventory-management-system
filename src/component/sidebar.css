@@ -1,3 +1,7 @@
+/* ===============================
+   Sidebar Base
+================================ */
+
 .sidebar {
     width: 220px;
     height: 100vh;
@@ -5,10 +9,12 @@
     color: #e5e7eb;
     padding: 20px;
     position: fixed;
-    display: flex;
-    flex-direction: column;
     left: 0;
     top: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    transition: transform 0.3s ease;
 }
 
 .sidebar-header {
@@ -25,6 +31,11 @@
     font-size: 13px;
     color: #9ca3af;
 }
+
+
+/* ===============================
+   Navigation
+================================ */
 
 .nav-links {
     display: flex;
@@ -48,6 +59,50 @@
 .nav-link.active {
     background: #22c55e;
     color: #052e16;
-    font-weight: bold;
-    border-left: 3px solid #fff;
+    font-weight: 600;
+    border-left: 3px solid #ffffff;
+}
+
+
+/* ===============================
+   Hamburger Button
+================================ */
+
+.hamburger {
+    display: none;
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    font-size: 22px;
+    background: #22c55e;
+    color: #052e16;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    z-index: 1100;
+    transition: left 0.3s ease;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 900;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    .hamburger {
+        display: block;
+    }
+    .hamburger.open {
+        left: 210px;
+        top: 30px;
+    }
 }

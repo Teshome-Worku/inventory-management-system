@@ -5,6 +5,10 @@
     min-height: 100vh;
 }
 
+.title {
+    display: flex;
+}
+
 .inventory-page-title {
     font-size: 26px;
     font-weight: 600;
@@ -75,7 +79,7 @@
 
 .actions button {
     height: 32px;
-    padding: 0 12px;
+    /* padding: 0 12px; */
     font-size: 13px;
     border-radius: 6px;
     border: none;
@@ -84,20 +88,25 @@
     align-items: center;
     justify-content: center;
     transition: transform 0.2s ease;
+    background: none;
 }
 
-.edit-btn img,
 .delete-btn img {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
+}
+
+.edit-btn img {
+    width: 20px;
+    height: 20px;
 }
 
 .edit-btn:hover,
 .delete-btn:hover {
-    transform: scale(1.11);
+    transform: scale(1.01);
 }
 
-.delete-btn img {
+.delete-btn {
     color: red;
 }
 
@@ -112,5 +121,9 @@
     }
     .actions {
         flex-direction: column;
+    }
+    .title {
+        justify-content: center;
+        margin-top: 15px;
     }
 }
