@@ -1,83 +1,86 @@
 import { useEffect, useState } from "react";
 import { getAllItems } from "../db/inventoryDB";
 import "../component/dashboard.css";
-import total from '../assets/total.png'
-import quantity from '../assets/quantity.png'
-import category from '../assets/category.png'
-import low from '../assets/low.png'
+import total from "../assets/total.png";
+import quantity from "../assets/quantity.png";
+import category from "../assets/category.png";
+import lowStock from "../assets/low.png";
+import { useNavigate } from "react-router-dom";
 
 const LOW_STOCK_LIMIT = 5;
 
 const Dashboard = () => {
   const [items, setItems] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadInventory = async () => {
       const data = await getAllItems();
       setItems(data);
     };
-
     loadInventory();
   }, []);
 
-  // 1. Total unique items
   const totalItems = items.length;
 
-  // 2. Total quantity
   const totalQuantity = items.reduce(
-    (sum, item) => sum + Number(item.quantity),
-    0
-  );
+    (sum, item) => sum + Number(item.quantity), 0);
 
-  // 3. Unique categories
   const categoriesCount = new Set(
-    items.map((item) => item.category)
-  ).size;
+    items.map((item) => item.category)).size;
 
-  // 4. Low stock items
   const lowStockItems = items.filter(
     (item) => Number(item.quantity) <= LOW_STOCK_LIMIT
   );
 
-  // 5. Recently added (latest first)
   const recentItems = [...items]
     .sort((a, b) => b.createdAt - a.createdAt)
     .slice(0, 5);
 
   return (
     <div className="dashboard">
-      <div className="dash">
+      {/* ===== HEADER ===== */}
+      <div className="dashboard-header">
         <h1 className="dashboard-title">Dashboard</h1>
 
+        <button
+          className="add-inventory-btn"
+          onClick={() => navigate("/addItem")}
+        >
+          + Add Inventory
+        </button>
       </div>
 
-      {/* ===== SUMMARY CARDS ===== */}
+      {/* ===== STATS ===== */}
       <div className="stats-grid">
         <div className="stat-card">
+          <img src={total} alt="Total Items" className="stat-icon" />
           <h3>Total Items</h3>
-            <p className="stat-number">{totalItems}</p>
-            <span><img src={total} alt="total item"/></span>
-         
+          <p className="stat-number">{totalItems}</p>
         </div>
+
         <div className="stat-card">
+          <img src={quantity} alt="Total Quantity" className="stat-icon" />
           <h3>Total Quantity</h3>
           <p className="stat-number">{totalQuantity}</p>
         </div>
 
         <div className="stat-card">
+          <img src={category} alt="Categories" className="stat-icon" />
           <h3>Categories</h3>
           <p className="stat-number">{categoriesCount}</p>
         </div>
 
-        <div className="stat-card warning">
+        <div className={`stat-card ${lowStockItems.length>0?"warning":""}`}>
+          <img src={lowStock} alt="Low Stock" className="stat-icon" />
           <h3>Low Stock</h3>
           <p className="stat-number">{lowStockItems.length}</p>
         </div>
       </div>
 
-      {/* ===== DASHBOARD SECTIONS ===== */}
+      {/* ===== SECTIONS ===== */}
       <div className="dashboard-sections">
-        {/* LOW STOCK */}
+        {/* Low Stock */}
         <div className="section">
           <h2>⚠ Low Stock Items</h2>
 
@@ -88,16 +91,14 @@ const Dashboard = () => {
               {lowStockItems.slice(0, 5).map((item) => (
                 <li key={item.id}>
                   <span>{item.name}</span>
-                  <span className="qty danger">
-                    {item.quantity} left
-                  </span>
+                  <span className="qty danger">{item.quantity} left</span>
                 </li>
               ))}
             </ul>
           )}
         </div>
 
-        {/* RECENT ITEMS */}
+        {/* Recent */}
         <div className="section">
           <h2>🆕 Recently Added</h2>
 
@@ -126,8 +127,8 @@ const Dashboard = () => {
           )}
         </div>
       </div>
+      
     </div>
   );
 };
-
 export default Dashboard;

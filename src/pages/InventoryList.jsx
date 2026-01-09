@@ -15,7 +15,6 @@ const InventoryList = () => {
   useEffect(() => {
     loadItems();
   }, []);
-
   const loadItems = async () => {
     const data = await getAllItems();
     setItems(data);
@@ -62,7 +61,11 @@ const InventoryList = () => {
                 <td>{item.category}</td>
                 <td>${item.price}</td>
                 <td>{item.quantity}</td>
-                <td>{item.createdAt.toLocaleDateString()}</td>
+                <td>{item.createdAt.toLocaleDateString('en-US',{
+                  year:'numeric',
+                  month:'short',
+                  day:'numeric'
+                })}</td>
                 <td>
                   <div className="actions">
                     <button className="edit-btn" onClick={()=>setSelectedItem(item)}>

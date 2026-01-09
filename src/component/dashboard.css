@@ -8,18 +8,39 @@
     font-family: "Inter", system-ui, sans-serif;
 }
 
-.dash {
+
+/* ===== HEADER ===== */
+
+.dashboard-header {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
 }
-
-
-/* ===== TITLE ===== */
 
 .dashboard-title {
     font-size: 28px;
     font-weight: 700;
     color: #1f2937;
-    margin-bottom: 24px;
+}
+
+
+/* ===== ADD BUTTON ===== */
+
+.add-inventory-btn {
+    background: #22c55e;
+    color: #052e16;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-inventory-btn:hover {
+    background: #16a34a;
 }
 
 
@@ -36,21 +57,12 @@
 /* ===== STAT CARD ===== */
 
 .stat-card {
+    position: relative;
     background: #ffffff;
     border-radius: 14px;
     padding: 20px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.stat-card span {
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.stat-card img {
-    width: 40px;
-    height: 40px;
 }
 
 .stat-card:hover {
@@ -72,23 +84,42 @@
 }
 
 
-/* ===== WARNING CARD ===== */
+/* ===== CARD ICON ===== */
 
-.stat-card.warning {
-    border-left: 6px solid #ef4444;
+.stat-icon {
+    position: absolute;
+    top: 46px;
+    right: 16px;
+    width: 46px;
+    height: 46px;
+    opacity: 0.9;
 }
 
 
-/* ===== DASHBOARD SECTIONS ===== */
+/* ===== WARNING ===== */
+
+.stat-card.warning {
+    border-left: 3px solid #ef4444;
+    /* animation: lowStock 1s forwards infinite; */
+}
+
+@keyframes lowStock {
+    0% {
+        border: 1px solid #ef4444;
+    }
+    100% {
+        border: none;
+    }
+}
+
+
+/* ===== SECTIONS ===== */
 
 .dashboard-sections {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
 }
-
-
-/* ===== SECTION ===== */
 
 .section {
     background: #ffffff;
@@ -100,12 +131,11 @@
 .section h2 {
     font-size: 18px;
     font-weight: 600;
-    color: #1f2937;
     margin-bottom: 16px;
 }
 
 
-/* ===== LOW STOCK LIST ===== */
+/* ===== LOW STOCK ===== */
 
 .low-stock-list {
     list-style: none;
@@ -134,16 +164,12 @@
 }
 
 
-/* ===== RECENT ITEMS GRID ===== */
+/* ===== RECENT ITEMS ===== */
 
 .recent-grid {
     display: grid;
-    grid-template-columns: 1fr;
     gap: 14px;
 }
-
-
-/* ===== RECENT CARD ===== */
 
 .recent-card {
     display: flex;
@@ -152,52 +178,41 @@
     padding: 12px;
     border-radius: 12px;
     background: #f9fafb;
-    transition: background 0.2s ease;
-}
-
-.recent-card:hover {
-    background: #f3f4f6;
-    cursor: pointer;
 }
 
 .recent-card img {
-    width: 54px;
-    height: 54px;
+    width: 60px;
+    height: 60px;
     border-radius: 10px;
     object-fit: cover;
     border: 1px solid #e5e7eb;
-    transition: transform 0.2s ease;
 }
 
-.recent-card img:hover {
-    transform: none;
+.recent-card:hover {
+    cursor: pointer;
 }
 
 .recent-card h4 {
     font-size: 15px;
     margin: 0;
-    color: #111827;
 }
 
 .recent-card p {
     font-size: 13px;
     color: #6b7280;
-    margin: 2px 0;
 }
 
 .recent-card small {
     font-size: 12px;
-    color: #374151;
 }
 
 
-/* ===== EMPTY STATE ===== */
+/* ===== EMPTY ===== */
 
 .empty {
     font-size: 14px;
     color: #9ca3af;
     text-align: center;
-    padding: 16px;
 }
 
 
@@ -209,12 +224,13 @@
     }
 }
 
-@media (max-width:768px) {
+@media (max-width: 768px) {
     .dashboard {
         margin-left: 0;
     }
-    .dash {
-        margin-top: 10px;
-        justify-content: center;
+    .dashboard-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
     }
 }
