@@ -49,6 +49,15 @@ const Sidebar = () => {
           >
             📦 Inventory
           </NavLink>
+          <NavLink
+            to="/reports"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            🔂 Reports
+          </NavLink>
         </nav>
       </aside>
     </>

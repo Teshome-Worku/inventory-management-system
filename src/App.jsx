@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Sidebar from './component/Sidebar';
 import Dashboard from './pages/Dashboard';
 import InventoryList from './pages/InventoryList';
+import Reports from './pages/Reports';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path='/' element={<Dashboard/>}/>
       <Route path='/addItem' element={<AddItem/>}/>
       <Route path='/inventory_list' element={<InventoryList/>}/>
+      <Route path='/reports' element={<Reports/>}/>
     </Routes>
     
     </BrowserRouter>
