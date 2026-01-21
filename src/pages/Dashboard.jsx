@@ -53,25 +53,25 @@ const Dashboard = () => {
 
       {/* ===== STATS ===== */}
       <div className="stats-grid">
-        <div className="stat-card">
+        <div className="stat-card" onClick={() => navigate("/reports/totalItems")}>
           <img src={total} alt="Total Items" className="stat-icon" />
           <h3>Total Items</h3>
           <p className="stat-number">{totalItems}</p>
         </div>
 
-        <div className="stat-card">
+        <div className="stat-card" onClick={() => navigate("/reports/quantity")}>
           <img src={quantity} alt="Total Quantity" className="stat-icon" />
           <h3>Total Quantity</h3>
           <p className="stat-number">{totalQuantity}</p>
         </div>
 
-        <div className="stat-card">
+        <div className="stat-card" onClick={() => navigate("/reports/categories")}>
           <img src={category} alt="Categories" className="stat-icon" />
           <h3>Categories</h3>
           <p className="stat-number">{categoriesCount}</p>
         </div>
 
-        <div className={`stat-card ${lowStockItems.length>0?"warning":""}`}>
+        <div className={`stat-card ${lowStockItems.length>0?"warning":""}`} onClick={() => navigate("/reports/lowStock")}>
           <img src={lowStock} alt="Low Stock" className="stat-icon" />
           <h3>Low Stock</h3>
           <p className="stat-number">{lowStockItems.length}</p>

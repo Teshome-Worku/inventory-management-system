@@ -1,9 +1,25 @@
 import { useEffect, useState } from "react";
 import { getAllItems } from "../db/inventoryDB";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import "../component/Reports.css";
 
 const Reports = () => {
   const [items, setItems] = useState([]);
+  const location = useLocation();
+  const params = useParams();
+  const navigate = useNavigate();
+  const focus = params.focus || (location.state && location.state.focus);
+
+  useEffect(() => {
+    if (!focus) {
+      document.title = "Reports";
+      return;
+    }
+    if (focus === "totalItems") document.title = "Reports - Total Items";
+    else if (focus === "quantity") document.title = "Reports - Total Quantity";
+    else if (focus === "categories") document.title = "Reports - Categories";
+    else if (focus === "lowStock") document.title = "Reports - Low Stock";
+  }, [focus]);
 
   useEffect(() => {
     loadItems();
@@ -30,7 +46,119 @@ const Reports = () => {
       totalQty: catItems.reduce((sum, i) => sum + i.quantity, 0),
     };
   });
+  // If a focus is provided via URL param or state, render a focused view
+  if (focus) {
+    return (
+      <div className="reports-page">
+        <div className="title">
+          <h2 className="reports-title">{`Reports — ${focus}`}</h2>
+          <button onClick={() => navigate('/reports')} style={{marginLeft:12}}>Back</button>
+        </div>
 
+        {focus === "totalItems" && (
+          <div className="report-section">
+            <h3>Total Items</h3>
+            <p className="stat-number">{totalItems}</p>
+            <table className="report-table">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Category</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map(i => (
+                  <tr key={i.id}>
+                    <td>{i.name}</td>
+                    <td>{i.category}</td>
+                    <td>{i.quantity}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {focus === "quantity" && (
+          <div className="report-section">
+            <h3>Total Quantity</h3>
+            <p className="stat-number">{totalQuantity}</p>
+            <table className="report-table">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map(i => (
+                  <tr key={i.id}>
+                    <td>{i.name}</td>
+                    <td>{i.quantity}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {focus === "categories" && (
+          <div className="report-section">
+            <h3>Category Summary</h3>
+            <table className="report-table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Items</th>
+                  <th>Total Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                {categorySummary.map(cat => (
+                  <tr key={cat.category}>
+                    <td>{cat.category}</td>
+                    <td>{cat.itemsCount}</td>
+                    <td>{cat.totalQty}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {focus === "lowStock" && (
+          <div className="report-section">
+            <h3>Low Stock Items</h3>
+            {lowStockItems.length === 0 ? (
+              <p className="empty">No low stock items 🎉</p>
+            ) : (
+              <table className="report-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {lowStockItems.map(item => (
+                    <tr key={item.id} className="danger-row">
+                      <td>{item.name}</td>
+                      <td>{item.category}</td>
+                      <td>{item.quantity}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Default: full reports page
   return (
     <div className="reports-page">
         <div className="title">

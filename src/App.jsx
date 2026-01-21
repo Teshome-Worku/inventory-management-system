@@ -16,7 +16,8 @@ function App() {
       <Route path='/' element={<Dashboard/>}/>
       <Route path='/addItem' element={<AddItem/>}/>
       <Route path='/inventory_list' element={<InventoryList/>}/>
-      <Route path='/reports' element={<Reports/>}/>
+      <Route path="/reports" element={<Reports/>}/>
+      <Route path="/reports/:focus" element={<Reports/>}/>
     </Routes>
     
     </BrowserRouter>
