@@ -52,7 +52,7 @@ const Reports = () => {
       <div className="reports-page">
         <div className="title">
           <h2 className="reports-title">{`Reports — ${focus}`}</h2>
-          <button onClick={() => navigate('/reports')} style={{marginLeft:12}}>Back</button>
+          <button onClick={() => navigate('/reports')} style={{marginLeft:12}} className="back-button">🔙Back</button>
         </div>
 
         {focus === "totalItems" && (

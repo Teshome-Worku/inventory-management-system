@@ -86,6 +86,44 @@
     vertical-align: middle;
 }
 
+
+/* Focused view helpers */
+
+.stat-number {
+    font-size: 40px;
+    font-weight: 700;
+    color: #111827;
+    margin: 12px 0 18px 0;
+}
+
+.back-button {
+    background: transparent;
+    border: 1px solid #e6e9ee;
+    color: #374151;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.15s ease, transform 0.08s ease, box-shadow 0.12s ease;
+}
+
+.back-button:hover {
+    background: #f3f4f6;
+    box-shadow: 0 4px 10px rgba(16, 24, 40, 0.04);
+}
+
+.back-button:active {
+    transform: translateY(1px);
+}
+
+
+/* Slightly stronger visual for table header on focused views */
+
+.report-table thead th {
+    font-weight: 600;
+    color: #111827;
+}
+
 @media (max-width: 768px) {
     .reports-page {
         margin-left: 0;
