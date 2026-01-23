@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-left: 255px;
 }
 
 .add-item h2 {
@@ -12,14 +13,15 @@
 
 .add-item-form {
     width: 100%;
-    max-width: 420px;
+    max-width: 900px;
     background: #ffffff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    align-items: start;
 }
 
 .add-item-form label {
@@ -32,8 +34,23 @@
 .add-item-form textarea {
     padding: 10px;
     border-radius: 6px;
-    border: 1px solid #ccc;
+    border: 0.5px solid #ccc;
     font-size: 14px;
+    width: auto;
+    max-width: 520px;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.add-item-form input[type="file"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .add-item-form input:focus,
@@ -47,13 +64,13 @@
     margin-top: 10px;
     padding: 12px;
     border: none;
-    border-radius: 6px;
-    /* background: #007bff; */
+    border-radius: 10px;
     background: #22c55e;
     color: white;
     font-size: 15px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, transform 0.08s ease;
+    width: 100%;
 }
 
 .add-item-form button:hover {
@@ -130,5 +147,78 @@
 @media (max-width: 480px) {
     .add-item-form {
         padding: 15px;
+    }
+    .add-item {
+        margin-left: 0;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    .add-item-form {
+        max-width: 100%;
+    }
+    .add-item-form input,
+    .add-item-form select,
+    .add-item-form textarea {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .add-item {
+        padding: 28px 24px;
+    }
+    .add-item-form {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px 18px;
+        max-width: 1000px;
+    }
+    /* make certain rows span full width */
+    .add-item-form .form-row.full {
+        grid-column: 1 / -1;
+    }
+    /* ensure the submit button spans and aligns */
+    .add-item-form .form-row.full button {
+        max-width: 360px;
+        margin: 0 auto;
+        display: block;
+    }
+    /* align labels above fields but give small spacing */
+    .add-item-form label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+    }
+}
+
+
+/* Restore previous desktop layout for larger screens to match original look */
+
+@media (min-width: 1024px) {
+    .add-item {
+        /* reapply left offset used by the sidebar on desktop */
+        margin-left: 255px;
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+    .add-item-form {
+        /* use a two-column grid on large desktop so some fields sit side-by-side */
+        max-width: 720px;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        display: grid;
+    }
+    /* Item pairs will occupy one column each; these rows span full width */
+    .add-item-form .form-row.full {
+        grid-column: 1 / -1;
+    }
+    .add-item-form .form-row {
+        width: 100%;
+    }
+    /* submit button constrained and centered */
+    .add-item-form .form-row.full button {
+        max-width: 360px;
+        margin: 0 auto;
+        display: block;
     }
 }

@@ -1,4 +1,4 @@
-import './save-popup.css'
+import './success-delete-popup.css'
 const ConfirmDeleteModal = ({ title, message, onConfirm, onCancel }) => {
     return (
       <div className="modal-overlay">

@@ -1,12 +1,9 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import "./sidebar.css";
-
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
-
   const closeSidebar = () => setOpen(false);
-
   return (
     <>
       {/* Hamburger Button */}

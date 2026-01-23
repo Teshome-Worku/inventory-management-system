@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { getAllItems } from "../db/inventoryDB";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import "../component/Reports.css";
-
 const Reports = () => {
   const [items, setItems] = useState([]);
   const location = useLocation();

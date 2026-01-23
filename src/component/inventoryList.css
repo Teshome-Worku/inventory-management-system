@@ -32,6 +32,9 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
 }
 
+
+/* on small screens we enable horizontal scrolling for the table (see media query below) */
+
 .inventory-table thead {
     background: #f9fafb;
 }
@@ -137,6 +140,7 @@
 
 .inventory-controls select {
     min-width: 160px;
+    flex: 0 1 160px;
 }
 
 .inventory-controls input:focus,
@@ -181,15 +185,53 @@
         margin-left: 0;
         padding: 16px;
     }
+    /* make table horizontally scrollable on small screens only */
+    .inventory-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
     .inventory-table th,
     .inventory-table td {
         font-size: 13px;
     }
+    /* keep action buttons inline but compact on mobile */
     .actions {
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 6px;
+    }
+    .actions button {
+        height: 34px;
+        width: 34px;
+        padding: 4px;
+    }
+    .delete-btn img {
+        width: 18px;
+        height: 18px;
+    }
+    .edit-btn img {
+        width: 16px;
+        height: 16px;
     }
     .title {
         justify-content: center;
-        margin-top: 15px;
+        margin-top: 12px;
+    }
+    /* Layout controls: search full-width, selects side-by-side */
+    .inventory-controls {
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .inventory-controls input {
+        flex: 1 1 100%;
+        min-width: 0;
+    }
+    .inventory-controls select {
+        flex: 1 1 calc(50% - 6px);
+        min-width: 0;
+    }
+    .inventory-controls select+select {
+        margin-left: 0;
     }
 }

@@ -28,9 +28,7 @@
 }
 
 
-/* ===============================
-   Modal Overlay
-================================ */
+/* for confirming deletions */
 
 .modal-overlay {
     position: fixed;

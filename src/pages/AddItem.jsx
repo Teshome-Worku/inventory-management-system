@@ -104,6 +104,7 @@ const AddItem = () => {
       console.error("Failed to add item:", error);
     }
   };
+  
   const closePopup=()=>{
     setSavePopup(false);
     setFormData({
@@ -118,79 +119,90 @@ const AddItem = () => {
     navigate("/");
 
   }
-
   return (
     <div className="add-item">
-      <h1>Add Inventory Item</h1>
+      <h2>Add Inventory Item</h2>
 
       <form onSubmit={handleSubmit} className="add-item-form">
-        <label >Item Name</label>
-        <input
-          type="text"
-          name="name"
-          ref={nameRef}
-          placeholder="Item name"
-          value={formData.name}
-          onChange={handleChange}
-        />
-        {nameError && <p className="error">{nameError}</p>}
+        <div className="form-row">
+          <label>Item Name</label>
+          <input
+            type="text"
+            name="name"
+            ref={nameRef}
+            placeholder="Item name"
+            value={formData.name}
+            onChange={handleChange}
+          />
+          {nameError && <p className="error">{nameError}</p>}
+        </div>
 
-        <label >Category</label>
-        <select ref={categoryRef} value={formData.category} onChange={handleChange} name="category">
-          <option value="">Select Category</option>
-          <option>Electronics</option>
-          <option>Clothing</option>
-          <option>Books</option>
-          <option>Home Appliances</option>
-          <option>Sports</option>
-          <option>Others</option>
-        </select>
-        {categoryError && <p className="error">{categoryError}</p>}
+        <div className="form-row">
+          <label>Category</label>
+          <select ref={categoryRef} value={formData.category} onChange={handleChange} name="category">
+            <option value="">Select Category</option>
+            <option>Electronics</option>
+            <option>Clothing</option>
+            <option>Books</option>
+            <option>Home Appliances</option>
+            <option>Sports</option>
+            <option>Others</option>
+          </select>
+          {categoryError && <p className="error">{categoryError}</p>}
+        </div>
 
-        <label >Quantity</label>
-        <input
-          type="number"
-          ref={quantityRef}
-          name="quantity"
-          placeholder="Quantity"
-          value={formData.quantity}
-          onChange={handleChange}
-        />
-        {quantityError && <p className="error">{quantityError}</p>}
+        <div className="form-row">
+          <label>Quantity</label>
+          <input
+            type="number"
+            ref={quantityRef}
+            name="quantity"
+            placeholder="Quantity"
+            value={formData.quantity}
+            onChange={handleChange}
+          />
+          {quantityError && <p className="error">{quantityError}</p>}
+        </div>
 
-        
-        <label>Price</label>
-        <input
-          type="number"
-          name="price"
-          ref={priceRef}
-          placeholder="Price"
-          value={formData.price}
-          onChange={handleChange}
-        />
-        {priceError && <p className="error">{priceError}</p>}
+        <div className="form-row">
+          <label>Price</label>
+          <input
+            type="number"
+            name="price"
+            ref={priceRef}
+            placeholder="Price"
+            value={formData.price}
+            onChange={handleChange}
+          />
+          {priceError && <p className="error">{priceError}</p>}
+        </div>
 
-        <label >Description</label>
-        <input 
-          type="text"
-          ref={descRef}
-          name="description"
-          placeholder="description"
-          value={formData.description}
-          onChange={handleChange}
-        />
-        {descError && <p className="error">{descError}</p>}
+        <div className="form-row full">
+          <label>Description</label>
+          <input
+            type="text"
+            ref={descRef}
+            name="description"
+            placeholder="Description"
+            value={formData.description}
+            onChange={handleChange}
+          />
+          {descError && <p className="error">{descError}</p>}
+        </div>
 
+        <div className="form-row">
+          <label>Image</label>
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            onChange={handleChange}
+          />
+        </div>
 
-        <label >Image</label>
-        <input
-          type="file"
-          name="image"
-          accept="image/*"
-          onChange={handleChange}
-        />
-
-        <button type="submit"> Add Item</button>
+        <div className="form-row full">
+          <button type="submit">Add Item</button>
+        </div>
       </form>
       {savePopup&& <SavePopup onClose={closePopup}/>}
     </div>

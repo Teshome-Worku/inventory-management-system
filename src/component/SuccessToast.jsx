@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import './save-popup.css'
+import './success-delete-popup.css'
 
 const SuccessToast = ({ message, onClose }) => {
   useEffect(() => {
-    const timer = setTimeout(onClose, 2500);
+    const timer = setTimeout(onClose, 1500);
     console.log("saved")
     return () => clearTimeout(timer);
   }, [onClose]);

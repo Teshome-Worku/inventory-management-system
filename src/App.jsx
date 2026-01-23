@@ -19,14 +19,9 @@ function App() {
       <Route path="/reports" element={<Reports/>}/>
       <Route path="/reports/:focus" element={<Reports/>}/>
     </Routes>
-    
     </BrowserRouter>
-   
-    
     </div>
-    
    
   )
 }
-
 export default App
