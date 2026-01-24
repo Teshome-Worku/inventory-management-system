@@ -173,17 +173,14 @@
         gap: 16px 18px;
         max-width: 1000px;
     }
-    /* make certain rows span full width */
     .add-item-form .form-row.full {
         grid-column: 1 / -1;
     }
-    /* ensure the submit button spans and aligns */
     .add-item-form .form-row.full button {
         max-width: 360px;
         margin: 0 auto;
         display: block;
     }
-    /* align labels above fields but give small spacing */
     .add-item-form label {
         display: block;
         margin-bottom: 6px;
@@ -191,31 +188,24 @@
     }
 }
 
-
-/* Restore previous desktop layout for larger screens to match original look */
-
 @media (min-width: 1024px) {
     .add-item {
-        /* reapply left offset used by the sidebar on desktop */
         margin-left: 255px;
         padding-left: 24px;
         padding-right: 24px;
     }
     .add-item-form {
-        /* use a two-column grid on large desktop so some fields sit side-by-side */
         max-width: 720px;
         grid-template-columns: 1fr 1fr;
         gap: 18px;
         display: grid;
     }
-    /* Item pairs will occupy one column each; these rows span full width */
     .add-item-form .form-row.full {
         grid-column: 1 / -1;
     }
     .add-item-form .form-row {
         width: 100%;
     }
-    /* submit button constrained and centered */
     .add-item-form .form-row.full button {
         max-width: 360px;
         margin: 0 auto;
